@@ -38,6 +38,16 @@
  * @{
  */
 
+/**
+ * Set a single pixel value in the buffer
+ *
+ * @param[out] buffer           The buffer in which to place the pixel
+ * @param[in]  pixel            Data for the pixel
+ * @param[in]  pixel_size       The size per pixel in bytes
+ * @param[in]  width            The width of the canvas in pixels
+ * @param[in]  x                X coordinate in pixels
+ * @param[in]  y                Y cooridnate in pixels
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_set_pixel(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -51,11 +61,19 @@ CANVAS_STATIC_INLINE void canvas_buffer_set_pixel(
     memcpy(buffer + offset, pixel, pixel_size);
 }
 
+/**
+ * Fill the entire canvas with one pixel value
+ *
+ * @param[out] buffer           The buffer of data to fill
+ * @param[in]  pixel            Data for the pixel
+ * @param[in]  pixel_size       The size per pixel in bytes
+ * @param[in]  memory_size      The total memory size of the canvas in bytes
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_fill(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
-    size_t memory_size,
-    size_t pixel_size
+    size_t pixel_size,
+    size_t memory_size
 )
 {
     for (size_t i = 0; i < memory_size; i += pixel_size)
@@ -64,11 +82,23 @@ CANVAS_STATIC_INLINE void canvas_buffer_fill(
     }
 }
 
+/**
+ * Rotate the canvas 90 degrees clockwise
+ *
+ * @param[out] destination      Destination buffer; the rotated canvas will be placed here.
+ * @param[in]  source           Source buffer; the original canvas comes from here.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      memory_size      The total memory size of the canvas in bytes
+ * @param      width            Width of the source canvas
+ * @param      height           Height of the source canvas
+ *
+ * @note `source` and `destination` must not point to overlapping memory.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_rotate_90_cw(
     uint8_t* CANVAS_RESTRICT destination,
     const uint8_t* CANVAS_RESTRICT source,
-    size_t memory_size,
     size_t pixel_size,
+    size_t memory_size,
     size_t width,
     size_t height
 )
@@ -89,11 +119,23 @@ CANVAS_STATIC_INLINE void canvas_buffer_rotate_90_cw(
     }
 }
 
+/**
+ * Rotate the canvas 90 degrees counter-clockwise
+ *
+ * @param[out] destination      Destination buffer; the rotated canvas will be placed here.
+ * @param[in]  source           Source buffer; the original canvas comes from here.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      memory_size      The total memory size of the canvas in bytes
+ * @param      width            Width of the source canvas
+ * @param      height           Height of the source canvas
+ *
+ * @note `source` and `destination` must not point to overlapping memory.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_rotate_90_ccw(
     uint8_t* CANVAS_RESTRICT destination,
     const uint8_t* CANVAS_RESTRICT source,
-    size_t memory_size,
     size_t pixel_size,
+    size_t memory_size,
     size_t width,
     size_t height
 )
@@ -114,11 +156,23 @@ CANVAS_STATIC_INLINE void canvas_buffer_rotate_90_ccw(
     }
 }
 
+/**
+ * Rotate the canvas by 180 degrees
+ *
+ * @param[out] destination      Destination buffer; the rotated canvas will be placed here.
+ * @param[in]  source           Source buffer; the original canvas comes from here.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      memory_size      The total memory size of the canvas in bytes
+ * @param      width            Width of the source canvas
+ * @param      height           Height of the source canvas
+ *
+ * @note `source` and `destination` must not point to overlapping memory.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_rotate_180(
     uint8_t* CANVAS_RESTRICT destination,
     const uint8_t* CANVAS_RESTRICT source,
-    size_t memory_size,
     size_t pixel_size,
+    size_t memory_size,
     size_t width,
     size_t height
 )
@@ -139,11 +193,23 @@ CANVAS_STATIC_INLINE void canvas_buffer_rotate_180(
     }
 }
 
+/**
+ * Flip the canvas along the horizontal axis
+ *
+ * @param[out] destination      Destination buffer; the flipped canvas will be placed here.
+ * @param[in]  source           Source buffer; the original canvas comes from here.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      memory_size      The total memory size of the canvas in bytes
+ * @param      width            Width of the source canvas
+ * @param      height           Height of the source canvas
+ *
+ * @note `source` and `destination` must not point to overlapping memory.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_flip_up_down(
     uint8_t* CANVAS_RESTRICT destination,
     const uint8_t* CANVAS_RESTRICT source,
-    size_t memory_size,
     size_t pixel_size,
+    size_t memory_size,
     size_t width,
     size_t height
 )
@@ -164,11 +230,23 @@ CANVAS_STATIC_INLINE void canvas_buffer_flip_up_down(
     }
 }
 
+/**
+ * Flip the canvas along the vertical axis
+ *
+ * @param[out] destination      Destination buffer; the flipped canvas will be placed here.
+ * @param[in]  source           Source buffer; the original canvas comes from here.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      memory_size      The total memory size of the canvas in bytes
+ * @param      width            Width of the source canvas
+ * @param      height           Height of the source canvas
+ *
+ * @note `source` and `destination` must not point to overlapping memory.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_flip_left_right(
     uint8_t* CANVAS_RESTRICT destination,
     const uint8_t* CANVAS_RESTRICT source,
-    size_t memory_size,
     size_t pixel_size,
+    size_t memory_size,
     size_t width,
     size_t height
 )
@@ -189,6 +267,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_flip_left_right(
     }
 }
 
+/**
+ * Place a filled rectangle into the canvas
+ *
+ * @param[out] buffer           The buffer into which the rectangle will be placed
+ * @param[in]  pixel            Pixel data for a single pixel. Each pixel inside the rectangle will have this pixel value.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      x_left           X-coordinate of the left side of the rectangle
+ * @param      x_right          X-coordinate of the right side of the rectangle (minus 1)
+ * @param      y_top            Y-coordinate of the top side of the rectangle
+ * @param      y_bottom         Y-coordinate of the bottom side of the rectangle (minus 1)
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_fill_rect(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -216,6 +306,17 @@ CANVAS_STATIC_INLINE void canvas_buffer_fill_rect(
     }
 }
 
+/**
+ * Draw a horizontal line on the canvas
+ *
+ * @param[out] buffer           The buffer into which the rectangle will be placed
+ * @param[in]  pixel            Pixel data for a single pixel. Each pixel inside the rectangle will have this pixel value.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      x_left           X-coordinate of the left edge of the line
+ * @param      x_right          X-coordinate of the right edge of the line (minus 1)
+ * @param      y                Y-coordinate of the line
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_horizontal_line(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -232,6 +333,17 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_horizontal_line(
     }
 }
 
+/**
+ * Draw a vertical line on the canvas
+ *
+ * @param[out] buffer           The buffer into which the rectangle will be placed
+ * @param[in]  pixel            Pixel data for a single pixel. Each pixel inside the rectangle will have this pixel value.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      x                X-coordinate of the line
+ * @param      y_top            Y-coordinate of the top edge of the line
+ * @param      y_bottom         Y-coordinate of the bottom edge of the line (minus 1)
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_vertical_line(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -248,6 +360,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_vertical_line(
     }
 }
 
+/**
+ * Draw a line on the canvas using Bresenham's line algorithm.
+ *
+ * @param[out] buffer           The buffer into which the line will be placed
+ * @param[in]  pixel            Pixel data for a single pixel. Each pixel on the line will have this pixel value.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      x_left           X-coordinate of the leftmost point on the line
+ * @param      x_right          X-coordinate of the rightmost point on the line (minus 1)
+ * @param      y_top            Y-coordinate of the topmost point on the line
+ * @param      y_bottom         Y-coordinate of the bottom point of the line (minus 1)
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_line(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -259,23 +383,17 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_line(
     size_t y_bottom
 )
 {
-    // Bressenham's line drawing algorithm
-
-    // Each coordinate, as integers
     int x_left_i = (int)x_left;
     int x_right_i = (int)x_right;
     int y_top_i = (int)y_top;
     int y_bottom_i = (int)y_bottom;
 
-    // Absolute difference in each direction
     int x_diff = x_right_i - x_left_i;
     int y_diff = y_bottom_i - y_top_i;
 
-    // Absolute difference in each direction
     int x_diff_abs = x_diff > 0 ? x_diff : -x_diff;
     int y_diff_abs = y_diff > 0 ? y_diff : -y_diff;
 
-    // Start and stop points, where x_stop > x_start and y_stop > y_start
     int x_start;
     int x_stop;
     int y_start;
@@ -349,6 +467,15 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_line(
     }
 }
 
+/**
+ * For internal use.
+ *
+ * @param a The first candidate
+ * @param b The second candidate
+ * @param c The third candidate
+ *
+ * @return The largest of `a`, `b` and `c`.
+ */
 CANVAS_STATIC_INLINE size_t canvas_buffer_max_of_3(size_t a, size_t b, size_t c)
 {
     size_t r = a;
@@ -363,6 +490,15 @@ CANVAS_STATIC_INLINE size_t canvas_buffer_max_of_3(size_t a, size_t b, size_t c)
     return r;
 }
 
+/**
+ * For internal use.
+ *
+ * @param a The first candidate
+ * @param b The second candidate
+ * @param c The third candidate
+ *
+ * @return The smallest of `a`, `b` and `c`.
+ */
 CANVAS_STATIC_INLINE size_t canvas_buffer_min_of_3(size_t a, size_t b, size_t c)
 {
     size_t r = a;
@@ -377,6 +513,18 @@ CANVAS_STATIC_INLINE size_t canvas_buffer_min_of_3(size_t a, size_t b, size_t c)
     return r;
 }
 
+/**
+ * For internal use, for calculating whether a point is inside a triangle.
+ *
+ * @param x_a X coordinate of vertex A
+ * @param x_b X coordinate of vertex B
+ * @param x_c X coordinate of vertex C
+ * @param y_a Y coordinate of vertex A
+ * @param y_b Y coordinate of vertex B
+ * @param y_c Y coordinate of vertex C
+ *
+ * @return Whether the edge function of the three vertices is smaller then 0.
+ */
 CANVAS_STATIC_INLINE bool canvas_buffer_edge_function(
     int x_a,
     int x_b,
@@ -389,6 +537,20 @@ CANVAS_STATIC_INLINE bool canvas_buffer_edge_function(
     return ((x_c - x_a) * (y_b - y_a) - (y_c - y_a) * (x_b - x_a)) < 0;
 }
 
+/**
+ * Place a filled triangle on the canvas
+ *
+ * @param[out] buffer      The buffer into which the triangle will be placed
+ * @param[in]  pixel       Pixel data for a single pixel. Each pixel inside the triangle will have this pixel value.
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_0         X-coordinate of the first vertex
+ * @param      x_1         X-coordinate of the second vertex
+ * @param      x_2         X-coordinate of the third vertex
+ * @param      y_0         Y-coordinate of the first vertex
+ * @param      y_1         Y-coordinate of the second vertex
+ * @param      y_2         Y-coordinate of the third vertex
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_fill_triangle(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -423,6 +585,20 @@ CANVAS_STATIC_INLINE void canvas_buffer_fill_triangle(
     }
 }
 
+/**
+ * Place a rectangle into the canvas
+ *
+ * @param[out] buffer           The buffer into which the rectangle will be placed
+ * @param[in]  pixel            Pixel data for a single pixel. Each pixel on the rectangle edges will have this pixel value.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      x_left           X-coordinate of the left side of the rectangle
+ * @param      x_right          X-coordinate of the right side of the rectangle (minus 1)
+ * @param      y_top            Y-coordinate of the top side of the rectangle
+ * @param      y_bottom         Y-coordinate of the bottom side of the rectangle (minus 1)
+ *
+ * If a filled rectangle is desired, use @ref canvas_buffer_fill_rect.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_rect(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -440,6 +616,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_rect(
     canvas_buffer_draw_vertical_line(buffer, pixel, pixel_size, width, x_right-1, y_top, y_bottom-1);
 }
 
+/**
+ * For internal use, when drawing circles.
+ *
+ * @param[out] buffer      The buffer into which the pixels will be placed
+ * @param[in]  pixel       Pixel data for a single pixel. Each pixel will have this pixel value.
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_center    X-coordinate of the center of the circle
+ * @param      y_center    Y-coordinate of the center of the circle
+ * @param      x_diff      X-coordinate difference between the center and the point in the second octant, in pixels
+ * @param      y_diff      Y-coordinate difference between the center and the point in the second octant, in pixels
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_octants(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -475,6 +663,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_octants(
     }
 }
 
+/**
+ * For internal use, when drawing filled circles (disks).
+ *
+ * @param[out] buffer      The buffer into which the pixels will be placed
+ * @param[in]  pixel       Pixel data for a single pixel. Each pixel will have this pixel value.
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_center    X-coordinate of the center of the circle
+ * @param      y_center    Y-coordinate of the center of the circle
+ * @param      x_diff      X-coordinate difference between the center and the point in the second octant, in pixels
+ * @param      y_diff      Y-coordinate difference between the center and the point in the second octant, in pixels
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_fill_octants(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -516,6 +716,19 @@ CANVAS_STATIC_INLINE void canvas_buffer_fill_octants(
     }
 }
 
+/**
+ * Draw a circle on the canvas
+ *
+ * @param[out] buffer      The buffer into which the circle will be placed
+ * @param[in]  pixel       Pixel data for a single pixel. Each pixel will have this pixel value.
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_center    X-coordinate of the center of the circle
+ * @param      y_center    Y-coordinate of the center of the circle
+ * @param      radius      The radius of the circle
+ *
+ * For a filled circle (disk), use @ref canvas_buffer_fill_circle.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_draw_circle(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -555,6 +768,17 @@ CANVAS_STATIC_INLINE void canvas_buffer_draw_circle(
     canvas_buffer_draw_octants(buffer, pixel, pixel_size, width, x_center, y_center, radius_div_sqrt2, radius_div_sqrt2);
 }
 
+/**
+ * Draw a filled circle (disk) on the canvas
+ *
+ * @param[out] buffer      The buffer into which the circle will be placed
+ * @param[in]  pixel       Pixel data for a single pixel. Each pixel will have this pixel value.
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_center    X-coordinate of the center of the circle
+ * @param      y_center    Y-coordinate of the center of the circle
+ * @param      radius      The radius of the circle
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_fill_circle(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT pixel,
@@ -594,6 +818,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_fill_circle(
     canvas_buffer_fill_octants(buffer, pixel, pixel_size, width, x_center, y_center, radius_div_sqrt2, radius_div_sqrt2);
 }
 
+/**
+ * Copy a bitmap into the canvas.
+ *
+ * @param[out] buffer      The buffer into which the bitmap will be placed
+ * @param[in]  bitmap      Pixel data for the bitmap
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_left      X-coordinate of the left side of the bitmap (relative to the left side of the canvas)
+ * @param      x_right     X-coordinate of the right side of the bitmap (relative to the left side of the canvas)
+ * @param      y_top       Y-coordinate of the top side of the bitmap (relative to the top side of the canvas)
+ * @param      y_bottom    Y-coordinate of the bottom side of the bitmap (relative to the top side of the canvas)
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_place_bitmap(
     uint8_t* CANVAS_RESTRICT buffer,
     const uint8_t* CANVAS_RESTRICT bitmap,
@@ -625,6 +861,18 @@ CANVAS_STATIC_INLINE void canvas_buffer_place_bitmap(
     }
 }
 
+/**
+ * Extract a bitmap from the canvas.
+ *
+ * @param[in]  buffer      The buffer from which the bitmap will be extracted
+ * @param[out] bitmap      Pixel data for the bitmap will be placed here
+ * @param      pixel_size  The size per pixel in bytes
+ * @param      width       Width of the canvas
+ * @param      x_left      X-coordinate of the left side of the bitmap (relative to the left side of the canvas)
+ * @param      x_right     X-coordinate of the right side of the bitmap (relative to the left side of the canvas)
+ * @param      y_top       Y-coordinate of the top side of the bitmap (relative to the top side of the canvas)
+ * @param      y_bottom    Y-coordinate of the bottom side of the bitmap (relative to the top side of the canvas)
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_extract_bitmap(
     const uint8_t* CANVAS_RESTRICT buffer,
     uint8_t* CANVAS_RESTRICT bitmap,
@@ -656,6 +904,24 @@ CANVAS_STATIC_INLINE void canvas_buffer_extract_bitmap(
     }
 }
 
+
+/**
+ * Copy a region from one location of the buffer into another
+ *
+ * @param[in]  buffer           The buffer on which the data will be copied
+ * @param      temporary        Temporary buffer to hold a copy of the source region during the transfer.
+ *                              It can be discarded after the call.
+ * @param      pixel_size       The size per pixel in bytes
+ * @param      width            Width of the canvas
+ * @param      source_x_left    X-coordinate of the left side of the source region
+ * @param      source_x_right   X-coordinate of the right side of the source region
+ * @param      source_y_top     Y-coordinate of the top side of the source region
+ * @param      source_y_bottom  Y-coordinate of the bottom side of the source region
+ * @param      dest_x_left      X-coordinate of the left side of the destination region
+ * @param      dest_y_top       Y-coordinate of the top side of the destionation region
+ *
+ * @note The temporary buffer must have a capacity of at least `(x_right - x_left) * (y_bottom - y_top) * pixel_size`.
+ */
 CANVAS_STATIC_INLINE void canvas_buffer_copy_region(
     uint8_t* CANVAS_RESTRICT buffer,
     uint8_t* CANVAS_RESTRICT temporary,
@@ -1091,8 +1357,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
     canvas_buffer_fill(
         cv->buffer,
         pixel,
-        cv->buffer_size,
-        cv->pixel_size
+        cv->pixel_size,
+        cv->buffer_size
     );
 }
 
@@ -1102,8 +1368,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
         canvas_buffer_rotate_90_cw(
             cv->_temp_buffer,
             cv->buffer,
-            cv->buffer_size,
             cv->pixel_size,
+            cv->buffer_size,
             cv->width,
             cv->height
         );
@@ -1115,8 +1381,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
         canvas_buffer_rotate_90_ccw(
             cv->_temp_buffer,
             cv->buffer,
-            cv->buffer_size,
             cv->pixel_size,
+            cv->buffer_size,
             cv->width,
             cv->height
         );
@@ -1128,8 +1394,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
         canvas_buffer_rotate_180(
             cv->_temp_buffer,
             cv->buffer,
-            cv->buffer_size,
             cv->pixel_size,
+            cv->buffer_size,
             cv->width,
             cv->height
         );
@@ -1141,8 +1407,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
         canvas_buffer_flip_up_down(
             cv->_temp_buffer,
             cv->buffer,
-            cv->buffer_size,
             cv->pixel_size,
+            cv->buffer_size,
             cv->width,
             cv->height
         );
@@ -1154,8 +1420,8 @@ CANVAS_STATIC_INLINE void canvas_fill(canvas_t* CANVAS_RESTRICT cv, uint8_t* CAN
         canvas_buffer_flip_left_right(
             cv->_temp_buffer,
             cv->buffer,
-            cv->buffer_size,
             cv->pixel_size,
+            cv->buffer_size,
             cv->width,
             cv->height
         );
