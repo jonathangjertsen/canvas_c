@@ -1,11 +1,10 @@
 add_library(canvas INTERFACE)
 target_include_directories(canvas INTERFACE .)
 
-add_library(canvas_text
-    canvas_text/stm_fonts/font8.c
-    canvas_text/stm_fonts/font12.c
-    canvas_text/stm_fonts/font16.c
-    canvas_text/stm_fonts/font20.c
-    canvas_text/stm_fonts/font24.c
+add_library(canvas_st_fonts
+    vendor/st/font8.c
+    vendor/st/font12.c
+    vendor/st/font16.c
+    vendor/st/font20.c
+    vendor/st/font24.c
 )
-target_include_directories(canvas_text PUBLIC canvas_text)
